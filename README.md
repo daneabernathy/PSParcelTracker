@@ -6,7 +6,7 @@ A PowerShell module for interacting with the [Parcel Tracker](https://parceltrac
 
 ## Attribution and Disclaimer
 
-This module is an independent, community-built integration and is **not affiliated with, endorsed by, or maintained by [Deepfinity LTD](https://parceltracker.com)**, the company behind Parcel Tracker.
+This module is an independent, community-built integration and is **not affiliated with, endorsed by, or maintained by [Deepfinity LTD](https://parceltracker.com)** [@deepfinity](https://github.com/deepfinity) the company behind Parcel Tracker.
 
 - **Parcel Tracker** is a product of Deepfinity LTD, registered in England and Wales (Company No. 10341207).
 - **Parcel Tracker website:** https://parceltracker.com
