@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Configuration>
+  <ViewDefinitions>
+
+    <!-- Tenant / Recipient -->
+    <View>
+      <Name>ParcelTracker.Tenant</Name>
+      <ViewSelectedBy>
+        <TypeName>ParcelTracker.Tenant</TypeName>
+      </ViewSelectedBy>
+      <TableControl>
+        <TableHeaders>
+          <TableColumnHeader><Label>Id</Label><Width>36</Width></TableColumnHeader>
+          <TableColumnHeader><Label>FirstName</Label><Width>15</Width></TableColumnHeader>
+          <TableColumnHeader><Label>LastName</Label><Width>15</Width></TableColumnHeader>
+          <TableColumnHeader><Label>Room</Label><Width>17</Width></TableColumnHeader>
+          <TableColumnHeader><Label>Alias</Label><Width>15</Width></TableColumnHeader>
+          <TableColumnHeader><Label>Email</Label><Width>30</Width></TableColumnHeader>
+        </TableHeaders>
+        <TableRowEntries>
+          <TableRowEntry>
+            <TableColumnItems>
+              <TableColumnItem><PropertyName>Id</PropertyName></TableColumnItem>
+              <TableColumnItem><PropertyName>FirstName</PropertyName></TableColumnItem>
+              <TableColumnItem><PropertyName>LastName</PropertyName></TableColumnItem>
+              <TableColumnItem><ScriptBlock>if ($_.Room.Length -gt 15) { $_.Room.Substring(0,15) + '…' } else { $_.Room }</ScriptBlock></TableColumnItem>
+              <TableColumnItem><PropertyName>Alias</PropertyName></TableColumnItem>
+              <TableColumnItem><PropertyName>Email</PropertyName></TableColumnItem>
+            </TableColumnItems>
+          </TableRowEntry>
+        </TableRowEntries>
+      </TableControl>
+    </View>
+
+    <!-- Parcel -->
+    <View>
+      <Name>ParcelTracker.Parcel</Name>
+      <ViewSelectedBy>
+        <TypeName>ParcelTracker.Parcel</TypeName>
+      </ViewSelectedBy>
+      <TableControl>
+        <TableHeaders>
+          <TableColumnHeader><Label>Id</Label><Width>36</Width></TableColumnHeader>
+          <TableColumnHeader><Label>Courier</Label><Width>12</Width></TableColumnHeader>
+          <TableColumnHeader><Label>TrackingNumber</Label><Width>22</Width></TableColumnHeader>
+          <TableColumnHeader><Label>Size</Label><Width>10</Width></TableColumnHeader>
+          <TableColumnHeader><Label>LoggedIn</Label><Width>22</Width></TableColumnHeader>
+          <TableColumnHeader><Label>Collected</Label><Width>22</Width></TableColumnHeader>
+        </TableHeaders>
+        <TableRowEntries>
+          <TableRowEntry>
+            <TableColumnItems>
+              <TableColumnItem><PropertyName>Id</PropertyName></TableColumnItem>
+              <TableColumnItem><PropertyName>Courier</PropertyName></TableColumnItem>
+              <TableColumnItem><PropertyName>TrackingNumber</PropertyName></TableColumnItem>
+              <TableColumnItem><PropertyName>Size</PropertyName></TableColumnItem>
+              <TableColumnItem><PropertyName>LoggedIn</PropertyName></TableColumnItem>
+              <TableColumnItem><PropertyName>Collected</PropertyName></TableColumnItem>
+            </TableColumnItems>
+          </TableRowEntry>
+        </TableRowEntries>
+      </TableControl>
+    </View>
+
+    <!-- User -->
+    <View>
+      <Name>ParcelTracker.User</Name>
+      <ViewSelectedBy>
+        <TypeName>ParcelTracker.User</TypeName>
+      </ViewSelectedBy>
+      <TableControl>
+        <TableHeaders>
+          <TableColumnHeader><Label>Id</Label><Width>36</Width></TableColumnHeader>
+          <TableColumnHeader><Label>FirstName</Label><Width>15</Width></TableColumnHeader>
+          <TableColumnHeader><Label>LastName</Label><Width>15</Width></TableColumnHeader>
+          <TableColumnHeader><Label>Email</Label><Width>30</Width></TableColumnHeader>
+          <TableColumnHeader><Label>Type</Label><Width>6</Width></TableColumnHeader>
+        </TableHeaders>
+        <TableRowEntries>
+          <TableRowEntry>
+            <TableColumnItems>
+              <TableColumnItem><PropertyName>Id</PropertyName></TableColumnItem>
+              <TableColumnItem><PropertyName>FirstName</PropertyName></TableColumnItem>
+              <TableColumnItem><PropertyName>LastName</PropertyName></TableColumnItem>
+              <TableColumnItem><PropertyName>Email</PropertyName></TableColumnItem>
+              <TableColumnItem><PropertyName>Type</PropertyName></TableColumnItem>
+            </TableColumnItems>
+          </TableRowEntry>
+        </TableRowEntries>
+      </TableControl>
+    </View>
+
+    <!-- Site -->
+    <View>
+      <Name>ParcelTracker.Site</Name>
+      <ViewSelectedBy>
+        <TypeName>ParcelTracker.Site</TypeName>
+      </ViewSelectedBy>
+      <TableControl>
+        <TableHeaders>
+          <TableColumnHeader><Label>Id</Label><Width>8</Width></TableColumnHeader>
+          <TableColumnHeader><Label>BuildingName</Label><Width>20</Width></TableColumnHeader>
+          <TableColumnHeader><Label>City</Label><Width>15</Width></TableColumnHeader>
+          <TableColumnHeader><Label>AddressLine1</Label><Width>30</Width></TableColumnHeader>
+          <TableColumnHeader><Label>Postcode</Label><Width>12</Width></TableColumnHeader>
+          <TableColumnHeader><Label>Country</Label><Width>12</Width></TableColumnHeader>
+        </TableHeaders>
+        <TableRowEntries>
+          <TableRowEntry>
+            <TableColumnItems>
+              <TableColumnItem><PropertyName>Id</PropertyName></TableColumnItem>
+              <TableColumnItem><PropertyName>BuildingName</PropertyName></TableColumnItem>
+              <TableColumnItem><PropertyName>City</PropertyName></TableColumnItem>
+              <TableColumnItem><PropertyName>AddressLine1</PropertyName></TableColumnItem>
+              <TableColumnItem><PropertyName>Postcode</PropertyName></TableColumnItem>
+              <TableColumnItem><PropertyName>Country</PropertyName></TableColumnItem>
+            </TableColumnItems>
+          </TableRowEntry>
+        </TableRowEntries>
+      </TableControl>
+    </View>
+
+  </ViewDefinitions>
+</Configuration>

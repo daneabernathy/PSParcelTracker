@@ -1,0 +1,22 @@
+# PowerShell
+*.ps1xml.bak
+
+# Any local config or secrets accidentally dropped here
+config.json
+*.key
+*.secret
+*.env
+
+# Test output
+TestResults/
+*.xml.results
+
+# VS Code
+.vscode/
+
+# JetBrains
+.idea/
+
+# Windows
+Thumbs.db
+desktop.ini
