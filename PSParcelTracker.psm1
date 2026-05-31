@@ -13,18 +13,22 @@ foreach ($file in Get-ChildItem -Path "$PSScriptRoot\Public" -Filter '*.ps1' -Re
     . $file.FullName
 }
 
-$_configPath = Join-Path $env:APPDATA 'ParcelTracker\config.json'
+$_configPath = Join-Path $env:APPDATA 'PSParcelTracker\config.json'
 if (Test-Path $_configPath) {
     Import-PTConfig -ErrorAction SilentlyContinue
 } else {
-    Write-Host 'ParcelTracker: No saved config found.' -ForegroundColor Yellow
-    $apiKey        = Read-Host 'Enter your API key'
-    $developmentId = Read-Host 'Enter your Development ID'
-    Connect-ParcelTracker -ApiKey $apiKey -DevelopmentId $developmentId
-    $save = Read-Host 'Save config for future sessions? (Y/N)'
-    if ($save -match '^[Yy]') {
-        Export-PTConfig
-        Write-Host 'Config saved.' -ForegroundColor Green
+    try {
+        Write-Host 'PSParcelTracker: No saved config found.' -ForegroundColor Yellow
+        $apiKey        = Read-Host 'Enter your API key'
+        $developmentId = Read-Host 'Enter your Development ID'
+        Connect-ParcelTracker -ApiKey $apiKey -DevelopmentId $developmentId
+        $save = Read-Host 'Save config for future sessions? (Y/N)'
+        if ($save -match '^[Yy]') {
+            Export-PTConfig
+            Write-Host 'Config saved.' -ForegroundColor Green
+        }
+    } catch {
+        Write-Verbose 'PSParcelTracker: Non-interactive session — run Connect-ParcelTracker to authenticate.'
     }
 }
 Remove-Variable _configPath

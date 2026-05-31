@@ -4,7 +4,7 @@ function Export-PTConfig {
         Saves the current ParcelTracker connection to a config file.
     .DESCRIPTION
         Persists the API key (encrypted via Windows DPAPI) and development ID to
-        $env:APPDATA\ParcelTracker\config.json. Load it in future sessions with Import-PTConfig.
+        $env:APPDATA\PSParcelTracker\config.json. Load it in future sessions with Import-PTConfig.
     .EXAMPLE
         Export-PTConfig
     #>
@@ -15,7 +15,7 @@ function Export-PTConfig {
         throw 'Not connected. Run Connect-ParcelTracker first.'
     }
 
-    $configDir = Join-Path $env:APPDATA 'ParcelTracker'
+    $configDir = Join-Path $env:APPDATA 'PSParcelTracker'
     if (-not (Test-Path $configDir)) {
         New-Item -ItemType Directory -Path $configDir | Out-Null
     }

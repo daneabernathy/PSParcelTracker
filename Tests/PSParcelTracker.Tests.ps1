@@ -1,9 +1,9 @@
 BeforeAll {
-    $modulePath = Join-Path $PSScriptRoot '..\ParcelTracker.psd1'
+    $modulePath = Join-Path $PSScriptRoot '..\PSParcelTracker.psd1'
     Import-Module $modulePath -Force
 
     # Fake a connected session so tests don't prompt for credentials
-    InModuleScope ParcelTracker {
+    InModuleScope PSParcelTracker {
         $script:PTApiKey        = 'test-api-key'
         $script:PTDevelopmentId = '9999'
         $script:PTBaseUrl       = 'https://api.parceltracker.com'
@@ -11,7 +11,7 @@ BeforeAll {
 }
 
 AfterAll {
-    Remove-Module ParcelTracker -ErrorAction SilentlyContinue
+    Remove-Module PSParcelTracker -ErrorAction SilentlyContinue
 }
 
 # ---------------------------------------------------------------------------
@@ -20,7 +20,7 @@ AfterAll {
 Describe 'Connect-ParcelTracker' {
     It 'Sets session variables' {
         Connect-ParcelTracker -ApiKey 'abc123' -DevelopmentId '42'
-        InModuleScope ParcelTracker {
+        InModuleScope PSParcelTracker {
             $script:PTApiKey        | Should -Be 'abc123'
             $script:PTDevelopmentId | Should -Be '42'
             $script:PTBaseUrl       | Should -Be 'https://api.parceltracker.com'
@@ -29,7 +29,7 @@ Describe 'Connect-ParcelTracker' {
 
     It 'Accepts a custom BaseUrl' {
         Connect-ParcelTracker -ApiKey 'abc123' -DevelopmentId '42' -BaseUrl 'https://staging.parceltracker.com/'
-        InModuleScope ParcelTracker {
+        InModuleScope PSParcelTracker {
             $script:PTBaseUrl | Should -Be 'https://staging.parceltracker.com'
         }
     }
@@ -39,7 +39,7 @@ Describe 'Disconnect-ParcelTracker' {
     It 'Clears session variables' {
         Connect-ParcelTracker -ApiKey 'abc123' -DevelopmentId '42'
         Disconnect-ParcelTracker
-        InModuleScope ParcelTracker {
+        InModuleScope PSParcelTracker {
             $script:PTApiKey        | Should -BeNullOrEmpty
             $script:PTDevelopmentId | Should -BeNullOrEmpty
         }
@@ -77,20 +77,20 @@ Describe 'Get-PTConnection' {
 # ---------------------------------------------------------------------------
 Describe 'Assert-PTPageSize' {
     It 'Returns the value when within range' {
-        InModuleScope ParcelTracker {
+        InModuleScope PSParcelTracker {
             Assert-PTPageSize -PageSize 100 | Should -Be 100
         }
     }
 
     It 'Clamps to 200 and warns when over limit' {
-        InModuleScope ParcelTracker {
+        InModuleScope PSParcelTracker {
             $result = Assert-PTPageSize -PageSize 500 -WarningVariable warn 3>$null
             $result | Should -Be 200
         }
     }
 
     It 'Throws when PageSize is less than 1' {
-        InModuleScope ParcelTracker {
+        InModuleScope PSParcelTracker {
             { Assert-PTPageSize -PageSize 0 } | Should -Throw
         }
     }
@@ -104,7 +104,7 @@ Describe 'Get-PTTenant' {
         Connect-ParcelTracker -ApiKey 'test' -DevelopmentId '99'
 
         # Mock at the HTTP level so real Invoke-PTPagedRequest (and its filter) runs
-        Mock -ModuleName ParcelTracker Invoke-PTRequest {
+        Mock -ModuleName PSParcelTracker Invoke-PTRequest {
             [PSCustomObject]@{
                 Page         = 1
                 PageSize     = 200
@@ -117,19 +117,19 @@ Describe 'Get-PTTenant' {
             }
         } -ParameterFilter { $Method -eq 'GET' -and $Path -eq '/api/public/tenants' }
 
-        Mock -ModuleName ParcelTracker Invoke-PTRequest {
+        Mock -ModuleName PSParcelTracker Invoke-PTRequest {
             [PSCustomObject]@{ Id = 'tenant-1'; FirstName = 'Jane'; LastName = 'Doe'; Room = '101' }
         } -ParameterFilter { $Method -eq 'GET' -and $Path -like '/api/public/tenants/*' }
     }
 
     It 'Calls Invoke-PTRequest for list' {
         Get-PTTenant
-        Should -Invoke Invoke-PTRequest -ModuleName ParcelTracker -Times 1
+        Should -Invoke Invoke-PTRequest -ModuleName PSParcelTracker -Times 1
     }
 
     It 'Calls Invoke-PTRequest for single tenant' {
         Get-PTTenant -TenantId 'tenant-1'
-        Should -Invoke Invoke-PTRequest -ModuleName ParcelTracker -Times 1
+        Should -Invoke Invoke-PTRequest -ModuleName PSParcelTracker -Times 1
     }
 
     It 'Returns results' {
@@ -145,7 +145,7 @@ Describe 'Get-PTTenant' {
 
     It 'Is accessible via Get-PTRecipient alias' {
         Get-PTRecipient
-        Should -Invoke Invoke-PTRequest -ModuleName ParcelTracker -Times 1
+        Should -Invoke Invoke-PTRequest -ModuleName PSParcelTracker -Times 1
     }
 }
 
@@ -156,14 +156,14 @@ Describe 'Get-PTUser' {
     BeforeAll {
         Connect-ParcelTracker -ApiKey 'test' -DevelopmentId '99'
 
-        Mock -ModuleName ParcelTracker Invoke-PTPagedRequest {
+        Mock -ModuleName PSParcelTracker Invoke-PTPagedRequest {
             [PSCustomObject]@{ Id = 'user-1'; FirstName = 'Admin'; LastName = 'User'; Email = 'admin@example.com'; Type = 2 }
         }
     }
 
     It 'Calls Invoke-PTPagedRequest' {
         Get-PTUser
-        Should -Invoke Invoke-PTPagedRequest -ModuleName ParcelTracker -Times 1
+        Should -Invoke Invoke-PTPagedRequest -ModuleName PSParcelTracker -Times 1
     }
 
     It 'Returns results' {
@@ -180,7 +180,7 @@ Describe 'Get-PTParcel' {
     BeforeAll {
         Connect-ParcelTracker -ApiKey 'test' -DevelopmentId '99'
 
-        Mock -ModuleName ParcelTracker Invoke-PTRequest {
+        Mock -ModuleName PSParcelTracker Invoke-PTRequest {
             [PSCustomObject]@{
                 Page         = 1
                 PageSize     = 200
@@ -196,7 +196,7 @@ Describe 'Get-PTParcel' {
 
     It 'Calls Invoke-PTRequest' {
         Get-PTParcel
-        Should -Invoke Invoke-PTRequest -ModuleName ParcelTracker -Times 1
+        Should -Invoke Invoke-PTRequest -ModuleName PSParcelTracker -Times 1
     }
 
     It 'Filters by courier with -Filter' {
@@ -211,7 +211,7 @@ Describe 'Get-PTParcel' {
 # ---------------------------------------------------------------------------
 Describe 'Get-PTSite' {
     BeforeAll {
-        Mock -ModuleName ParcelTracker Invoke-PTRequest {
+        Mock -ModuleName PSParcelTracker Invoke-PTRequest {
             @(
                 [PSCustomObject]@{ Id = 1000; BuildingName = 'Test Building'; City = 'Test City' }
             )
@@ -220,7 +220,7 @@ Describe 'Get-PTSite' {
 
     It 'Calls Invoke-PTRequest' {
         Get-PTSite
-        Should -Invoke Invoke-PTRequest -ModuleName ParcelTracker -Times 1
+        Should -Invoke Invoke-PTRequest -ModuleName PSParcelTracker -Times 1
     }
 
     It 'Returns site data' {
@@ -234,7 +234,7 @@ Describe 'Get-PTSite' {
 # ---------------------------------------------------------------------------
 Describe 'Module structure' {
     It 'Exports all expected functions' {
-        $exported = (Get-Module ParcelTracker).ExportedFunctions.Keys | Sort-Object
+        $exported = (Get-Module PSParcelTracker).ExportedFunctions.Keys | Sort-Object
         $exported | Should -Contain 'Connect-ParcelTracker'
         $exported | Should -Contain 'Disconnect-ParcelTracker'
         $exported | Should -Contain 'Get-PTConnection'
@@ -256,7 +256,7 @@ Describe 'Module structure' {
     }
 
     It 'Exports all expected aliases' {
-        $exported = (Get-Module ParcelTracker).ExportedAliases.Keys | Sort-Object
+        $exported = (Get-Module PSParcelTracker).ExportedAliases.Keys | Sort-Object
         $exported | Should -Contain 'Get-PTRecipient'
         $exported | Should -Contain 'New-PTRecipient'
         $exported | Should -Contain 'Set-PTRecipient'

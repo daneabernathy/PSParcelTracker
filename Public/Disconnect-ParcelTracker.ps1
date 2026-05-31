@@ -3,7 +3,7 @@ function Disconnect-ParcelTracker {
     .SYNOPSIS
         Clears the current ParcelTracker session.
     .PARAMETER RemoveConfig
-        Also deletes the saved config file from $env:APPDATA\ParcelTracker\config.json.
+        Also deletes the saved config file from $env:APPDATA\PSParcelTracker\config.json.
     .EXAMPLE
         Disconnect-ParcelTracker
     .EXAMPLE
@@ -19,7 +19,7 @@ function Disconnect-ParcelTracker {
     $script:PTBaseUrl       = 'https://api.parceltracker.com'
 
     if ($RemoveConfig) {
-        $configPath = Join-Path $env:APPDATA 'ParcelTracker\config.json'
+        $configPath = Join-Path $env:APPDATA 'PSParcelTracker\config.json'
         if (Test-Path $configPath) {
             if ($PSCmdlet.ShouldProcess($configPath, 'Delete saved config')) {
                 Remove-Item $configPath -Force
